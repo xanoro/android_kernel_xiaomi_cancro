@@ -104,9 +104,10 @@ static void early_suspend(struct work_struct *work)
 	mutex_unlock(&early_suspend_lock);
 
 	if (debug_mask & DEBUG_SUSPEND)
-		pr_info("early_suspend: sync\n");
+		pr_info("early_suspend: no sync\n");
 
-	sys_sync();
+	// emulate PM_SYNC_BEFORE_SUSPEND=n
+	//sys_sync();
 abort:
 	spin_lock_irqsave(&state_lock, irqflags);
 	if (state == SUSPEND_REQUESTED_AND_SUSPENDED)
