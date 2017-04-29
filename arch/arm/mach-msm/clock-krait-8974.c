@@ -573,6 +573,9 @@ static void krait_update_uv(int *uv, int num, int boost_uv)
 {
 	int i;
 
+	for (i = 0; i < num; i++)
+        	uv[i] -= 50000;
+
 	switch (read_cpuid_id()) {
 	case 0x511F04D0: /* KR28M2A20 */
 	case 0x511F04D1: /* KR28M2A21 */
@@ -773,6 +776,11 @@ static int clock_krait_8974_driver_probe(struct platform_device *pdev)
 			pvs = 0;
 			rows = ret;
 		}
+	}
+
+	while (rows--) {
+		if (freq[rows-1] == 1958400000)
+			break;
 	}
 
 	krait_update_uv(uv, rows, pvs ? 25000 : 0);
